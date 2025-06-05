@@ -3,6 +3,7 @@
 namespace Shovit\DemoPackage\Commands;
 
 use Illuminate\Console\Command;
+use Shovit\DemoPackage\Models\Wish;
 
 class DemoPackageCommand extends Command
 {
@@ -17,9 +18,15 @@ class DemoPackageCommand extends Command
 
         $this->comment($text);
         
-        $this->comment('All done');
+        $this->comment('This Command is now sent from the Shovit\DemoPackage\Commands\DemoPackageCommand');
 
-        $this->comment('The above Command is sent from the Shovit\DemoPackage\Commands\DemoPackageCommand');
+        $latest = Wish::orderBy('created_at','desc')->first();
+
+        if($latest){
+            $this->comment('The most recent birthday was of: ' . $latest->name);
+        } else {
+            $this->comment('No recent birthday records found');
+        }
 
         return self::SUCCESS;
     }
